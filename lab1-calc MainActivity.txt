@@ -1,0 +1,394 @@
+package com.example.lab1;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    private Button bu7;
+    private Button bu1;
+    private Button bu2;
+    private Button bu3;
+    private Button bu4;
+    private Button bu5;
+    private Button bu6;
+    private Button bu8;
+    private Button bu9;
+    private Button bu0;
+    private Button buDot;
+    private Button buPlusMinus;
+    private Button buPlus;
+    private Button buMinus;
+    private Button buDivide;
+    private Button buMultiply;
+    private Button buEqual;
+    private Button buC;
+    private Button buPersent;
+    Boolean isNew = true;
+    String operation = "";
+    String oldNumber;
+    String newNumber;
+    EditText editText;
+
+    public boolean dotIsPresent(String number) {
+        if(number.indexOf(".") == -1){
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+    public boolean minusISPresent(String number){
+      if(number.charAt(0) == '-') {
+          return true;
+      }
+      else{
+          return false;
+      }
+    };
+    private boolean numberIsZero(String number){
+        if(number.equals("0") || (number.equals(""))){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    public boolean zeroIsFirst(String number){
+        if(number.equals("")){
+            return true;
+        }
+        if(number.charAt(0) == '0'){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editText = findViewById(R.id.editText);
+        bu1 = findViewById(R.id.bu1);
+        bu2 = findViewById(R.id.bu2);
+        bu3 = findViewById(R.id.bu3);
+        bu4 = findViewById(R.id.bu4);
+        bu5 = findViewById(R.id.bu5);
+        bu6 = findViewById(R.id.bu6);
+        bu7 = findViewById(R.id.bu7);
+        bu8 = findViewById(R.id.bu8);
+        bu9 = findViewById(R.id.bu9);
+        bu0 = findViewById(R.id.bu0);
+
+        buDot = findViewById(R.id.buDot);
+        buPlusMinus = findViewById(R.id.buPlusMinus);
+        buPlus = findViewById(R.id.buPlus);
+        buMinus = findViewById(R.id.buMinus);
+        buMultiply = findViewById(R.id.buMultiply);
+        buDivide = findViewById(R.id.buDivide);
+        buEqual = findViewById(R.id.buEqual);
+        buC = findViewById(R.id.buC);
+        buPersent = findViewById(R.id.buPercent);
+
+        buC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isNew = true;
+                editText.setText("0");
+            }
+        });
+        buDot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String number = editText.getText().toString();
+
+                if(dotIsPresent(number)){}
+                else if(numberIsZero(number)){
+                    number = "0.";
+                }
+                else {
+                    number = number + ".";
+                }
+                editText.setText(number);
+
+            }
+        });
+
+        buPlusMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String number = editText.getText().toString();
+
+                if (numberIsZero(number)){
+                    number = "0";
+                }
+                else{
+                    if (minusISPresent(number)) {
+                        number = number.substring(1);
+                    }else {
+                        number = "-" + number;
+                    }
+                }
+                editText.setText(number);
+            }
+        });
+        buEqual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String newNumber = editText.getText().toString();
+                Double result = 0.0;
+
+                if (newNumber.equals("0") && operation == "/"
+                        || newNumber.equals("") && operation == "/") {
+                    Toast.makeText(MainActivity.this, "На ноль делить нельзя", Toast.LENGTH_LONG).show();
+                } else {
+                    switch (operation) {
+                        case "-":
+                            result = Double.parseDouble(oldNumber) - Double.parseDouble(newNumber);
+                            break;
+                        case "+":
+                            result = Double.parseDouble(oldNumber) + Double.parseDouble(newNumber);
+                            break;
+                        case "*":
+                            result = Double.parseDouble(oldNumber) * Double.parseDouble(newNumber);
+                            break;
+                        case "/":
+                            result = Double.parseDouble(oldNumber) / Double.parseDouble(newNumber);
+                            break;
+                    }
+                    editText.setText(result + "");
+                }
+            }
+        });
+        buPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isNew = true;
+                oldNumber = editText.getText().toString();
+                operation = "+";
+                editText.setText(operation);
+            }
+        });
+        buMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //String operation = editText.getText().toString();
+                isNew = true;
+                oldNumber = editText.getText().toString();
+                operation = "-";
+                editText.setText(operation);
+            }
+        });
+        buMultiply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //String operation = editText.getText().toString();
+                isNew = true;
+                oldNumber = editText.getText().toString();
+                operation = "*";
+                editText.setText(operation);
+            }
+        });
+        buDivide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //String operation = editText.getText().toString();
+                isNew = true;
+                oldNumber = editText.getText().toString();
+                operation = "/";
+                editText.setText(operation);
+            }
+        });
+        buPersent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(operation == "")
+                {
+                    String number = editText.getText().toString();
+                    double temp = Double.parseDouble(number) / 100;
+                    number = temp + "";
+                    editText.setText(number);
+                }
+                else if(operation == "+"){
+                    Double result = 0.0;
+                    String newNumber = editText.getText().toString();
+                    result = Double.parseDouble(oldNumber) + Double.parseDouble(oldNumber) * Double.parseDouble(newNumber) / 100;
+                    editText.setText(result+"");
+                    operation = "";
+                }
+                else if(operation == "-"){
+                    Double result = 0.0;
+                    String newNumber = editText.getText().toString();
+                    result = Double.parseDouble(oldNumber) - Double.parseDouble(oldNumber) * Double.parseDouble(newNumber) / 100;
+                    editText.setText(result+"");
+                    operation = "";
+                }
+                else if(operation == "*"){
+                    Double result = 0.0;
+                    String newNumber = editText.getText().toString();
+                    result = Double.parseDouble(oldNumber) * Double.parseDouble(newNumber) / 100;
+                    editText.setText(result+"");
+                    operation = "";
+                }
+                else if(operation == "/"){
+                    Double result = 0.0;
+                    String newNumber = editText.getText().toString();
+                    result = Double.parseDouble(oldNumber) / Double.parseDouble(newNumber) * 100;
+                    editText.setText(result+"");
+                    operation = "";
+                }
+            }
+        });
+
+        bu1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "1";
+                editText.setText(number);
+            }
+        });
+        bu2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "2";
+                editText.setText(number);
+            }
+        });
+        bu3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "3";
+                editText.setText(number);
+            }
+        });
+        bu4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "4";
+                editText.setText(number);
+            }
+        });
+        bu5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "5";
+                editText.setText(number);
+            }
+        });
+        bu6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "6";
+                editText.setText(number);
+            }
+        });
+        bu7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "7";
+                editText.setText(number);
+            }
+        });
+        bu8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "8";
+                editText.setText(number);
+            }
+        });
+        bu9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+
+                if(numberIsZero(number) && number.length() == 1){
+                    number = number.substring(1);
+                }
+                number = number + "9";
+                editText.setText(number);
+            }
+        });
+        bu0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isNew)
+                    editText.setText("");
+                isNew = false;
+                String number = editText.getText().toString();
+                if(numberIsZero(number) && number.length() == 1){
+                    number = "0";
+                }else{
+                    number = number + "0";
+                }
+
+                editText.setText(number);
+            }
+        });
+    }
+}
