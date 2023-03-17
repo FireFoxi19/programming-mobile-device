@@ -1,0 +1,29 @@
+package lab3;
+
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+
+class Bug {
+    boolean isRunning; //для хранения информации о том, бежит ли насекомое.
+    Matrix matrix; //для манипуляции с изображениями насекомого.
+    boolean alive; //для хранения информации о том, живо ли насекомое.
+    Bitmap texture; //для хранения текстуры насекомого.
+    Float x, y, stepX, stepY, destX, destY; //destX для хранения координаты, к которой направляется насекомое по оси X.
+    Integer p; // для хранения индекса текущей точки на маршруте насекомого.
+
+
+    Bug() {
+        matrix = new Matrix();
+        x = 0f;
+        y = 0f;
+        p = 0;
+        destX = 0f;
+        destY = 0f;
+        alive = true;
+    }
+
+    void die() {
+        alive = false;
+    } //устанавливает свойство alive в значение false, что означает, что насекомое умерло.
+
+}
